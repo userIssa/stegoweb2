@@ -2,7 +2,11 @@ services:
   - type: web
     name: stegoflask
     runtime: python
-    buildCommand: "./build.sh && pip install -r requirements.txt"
+    buildCommand: |
+      curl -L https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz | tar xJ
+      mv ffmpeg-*-static/ffmpeg /usr/local/bin/
+      chmod +x /usr/local/bin/ffmpeg
+      pip install -r requirements.txt
     startCommand: "gunicorn app:app"
     envVars:
       - key: FLASK_ENV
